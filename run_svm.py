@@ -1,5 +1,5 @@
 '''
-Machine Learning classification for character and word ngram
+Machine Learning classification for character ngram
 
 Zack
 
@@ -26,19 +26,6 @@ from sklearn.feature_selection import mutual_info_classif
 from sklearn.naive_bayes import BernoulliNB
 
 
-'''
-
-Feature Selection with Information Gain
-
-Author: Can Liu
-Modification: Ken Steimel
-
-If you want to use this method, please contact them and cite at least one of the following papers:
-Kübler, Sandra, Can Liu, and Zeeshan Ali Sayyed. "To use or not to use: Feature selection for sentiment analysis of highly imbalanced data." Natural Language Engineering 24.1 (2018): 3-37
-Liu, Can, Sandra Kübler, and Ning Yu. "Feature selection for highly skewed sentiment analysis tasks." Proceedings of the Second Workshop on Natural Language Processing for Social Media (SocialNLP). 2014.
-
-'''
-
 class MultiIG:
 
     def __init__(self, matrix, labels, vocab):
@@ -48,111 +35,16 @@ class MultiIG:
         self.matrix = matrix
         self.labels = labels
         self.vocab = vocab
-        if len(labels) != self.matrix.shape[0]:
-            print("Lengths of labels and matrix do not match")
+        print("For full code, please contact the author")
+'''
+Feature Selection with Information Gain
+Author: Can Liu
+Modification: Ken Steimel
+If you want to use this method, please contact them and cite at least one of the following papers:
+Kübler, Sandra, Can Liu, and Zeeshan Ali Sayyed. "To use or not to use: Feature selection for sentiment analysis of highly imbalanced data." Natural Language Engineering 24.1 (2018): 3-37
+Liu, Can, Sandra Kübler, and Ning Yu. "Feature selection for highly skewed sentiment analysis tasks." Proceedings of the Second Workshop on Natural Language Processing for Social Media (SocialNLP). 2014.
 
-    def perform_feature_selection(self, num_features, refresh=False):
-        if refresh or not self.ig_dict:
-            self.create_mutual_info_dicts()
-            # self.create_dicts()
-
-        self.choose_top_features(num_features)
-        return self.filter_matrix()
-
-    def choose_top_features(self, num_features):
-        ig_list = [[v, k] for k, v in self.ig_dict.items()]
-        ig_list.sort()
-        # with open("selected_features" + str(num_features) + ".txt", "w",encoding='utf-8') as out_fp:
-        #     for piece in ig_list:
-        #         out_fp.write(str(piece[0]) + "\t" + str(piece[1]) + "\n")
-
-        cut_off = len(ig_list) - num_features
-        cut_off = max(0, cut_off)
-        self.chosen_features = ig_list[cut_off:]
-        # print "Done selecting features! The number of features that Information Gain used:", len(ig_list[cut_off:])
-        # print "The name of this feature file is called {0} : Make sure to use a different FOLD NAME for different data partitions.".format(CORPATH + fold_name +"_IG_{0}.features".format(this_f) )
-
-        # pickle.dump(ig_dict,open(CORPATH + fold_name + "_igdict.pickle","wb"))
-
-    def filter_matrix(self, matrix=None):
-        """
-        Author: Ken Steimel
-        Date: 2018 10 08
-        This method will create a boolean mask from the chosen features list
-
-        """
-        print("Filtering matrix...")
-        indexes = [self.indexes_dict[feature[1]] for feature in self.chosen_features]
-        indexes.sort()
-        if matrix != None:
-            return matrix[:, indexes]
-        else:
-            return self.matrix[:, indexes]
-
-    def create_mutual_info_dicts(self):
-        """
-        This is a version to compare against the results from using create_dicts with my
-        self-coded version of mutual information
-        """
-        res = dict(zip(self.vocab, mutual_info_classif(self.matrix, self.labels)))
-        self.ig_dict = res
-        self.indexes_dict = dict(zip(self.vocab, range(len(self.vocab))))
-
-    def create_dicts(self):
-        """
-        Instead of having one dictionary holding feature names and information gain values
-        This method produces two dictionaries, one that has the feature names and information gain values
-        and another that has features as keys and indexes for the columnn as vals
-        """
-        print("There are " + str(self.matrix.shape[1]) + " features and ")
-        print(str(self.matrix.shape[0]) + " instances to consider")
-        possible_labels = list(set(self.labels))
-        matricies = {}
-        ig_dict = {}
-        indexes_dict = {}
-        sums = {}
-        probabilities = {}
-        total_sum = float(self.matrix.sum())
-        ig_term1 = 0
-        for label in possible_labels:
-            row_slice = [True if val == label else False for val in self.labels]
-            matricies[label] = self.matrix[row_slice, :]
-            sums[label] = float(matricies[label].sum())
-            probabilities[label] = max(sums[label] / total_sum, 0.00000000001)
-            ig_term1 += probabilities[label] * log(probabilities[label])
-
-        ig_term1 *= -1
-        print("Calculating information gain for feature: ")
-        print("\r0", end='')
-        for col_index in range(len(self.vocab)):
-            if col_index % 100 == 0:
-                print("\r" + str(col_index), end="")
-            term = self.vocab[col_index]
-            t_count = max(float(self.matrix[:, col_index].sum()), 0.00000000001)
-            label_counts = {}
-            ig_term2 = 0
-            ig_term3 = 0
-            p_t = float(t_count) / total_sum
-            p_tbar = 1 - p_t
-            for label in possible_labels:
-                try:
-                    label_counts[label] = float(a_matrix[:, col_index].sum())
-                except:
-                    label_counts[label] = 0.0
-                    p_c1_t = max(label_counts[label] / t_count, 0.00000000001)
-                    ig_term2 += p_c1_t * log(p_c1_t)
-                    p_c1_tbar = max((sums[label] - label_counts[label]) / (total_sum - t_count), 0.00000000001)
-                    ig_term3 += p_c1_tbar * log(p_c1_tbar)
-
-            ig_term2 *= p_t
-            ig_term3 *= p_tbar
-            ig = ig_term1 + ig_term2 + ig_term3
-            # print ig
-            ig_dict[term] = ig
-            indexes_dict[term] = col_index
-
-        self.ig_dict = ig_dict
-        self.indexes_dict = indexes_dict
+'''
 
 
 def data_process():
