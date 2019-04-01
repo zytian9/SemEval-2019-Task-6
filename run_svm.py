@@ -106,8 +106,6 @@ def classify():
     testingDataXnp2 = np.genfromtxt(testingData_emoji,delimiter='\t')
 
 
-    # Need to change y data into single iterable without
-    # iterables inside it
     trainingDataY = np.ravel(trainingDataY)
     testingDataY = np.ravel(testingDataY)
 
