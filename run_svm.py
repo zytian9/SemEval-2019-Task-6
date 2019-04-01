@@ -35,7 +35,7 @@ class MultiIG:
         self.matrix = matrix
         self.labels = labels
         self.vocab = vocab
-        print("For full code, please contact the author")
+        print("for full code, please contact the author")
 '''
 Feature Selection with Information Gain
 Author: Can Liu
@@ -48,6 +48,7 @@ Liu, Can, Sandra Kübler, and Ning Yu. "Feature selection for highly skewed sent
 
 
 def data_process():
+    #Sub-task C as an example, Sub-task b is quite similar with it.
     train_file_path = r'./training-data/offenseval-training-taskb-tweet.tsv'
     test_file_path = r'./trial-data/offenseval-trial-taskb-tweet.tsv'
     train_set = pd.read_csv(train_file_path, sep="\t",header=None)
@@ -63,28 +64,25 @@ def data_process():
                                  min_df=1,
                                  binary=True)
 
-    train_bool_matrix = vectorizer_word.fit_transform(x_train)
-    test_bool_matrix = vectorizer_word.transform(x_test)
+    train_bool_matrix = vectorizer_char.fit_transform(x_train)
+    test_bool_matrix = vectorizer_char.transform(x_test)
 
     lb = LabelEncoder()
     training_data_Y = lb.fit_transform(y_train)
-
-    # scipy.io.mmwrite('../training-data-svm/train_matrix_bool.mtx', train_bool_matrix)
-    # scipy.io.mmwrite('../trial-data-svm/trial_matrix_bool.mtx', test_bool_matrix)
 
     ### Feature Selection ###
     ig_obj = MultiIG(train_bool_matrix, training_data_Y, list(vectorizer_char.vocabulary_.keys()))
     for f_length in 1000,2000,5000:
         training_res = ig_obj.perform_feature_selection(f_length)
         test_res = ig_obj.filter_matrix(test_bool_matrix)
-        scipy.io.mmwrite('./training-data-svm/train_simp_matrix_char' + str(f_length) + '.mtx', training_res)
-        scipy.io.mmwrite('./trial-data-svm/trial_simp_matrix_char' + str(f_length) + '.mtx', test_res)
-
+        scipy.io.mmwrite('./training-data-svm/train_matrix_char' + str(f_length) + '.mtx', training_res)
+        scipy.io.mmwrite('./trial-data-svm/trial_matrix_char' + str(f_length) + '.mtx', test_res)
 
 def classify():
     train_file_path = open("./training-data/offenseval-training-taskb.tsv")
     test_file_path = open("./trial-data/offenseval-trial-taskb.tsv")
 
+    # add linguistic, emoji and entity features
     trainingData_emoji = open("./training-data/training-taskb-emoji.tsv")
     testingData_emoji= open("./trial-data/trial-taskb-emoji.tsv")
 
@@ -152,7 +150,6 @@ def classify():
     print ("F1 score: ",f1_score(testingDataYnp,predictingY,average='macro'))
     print(classification_report(testingDataYnp, predictingY, digits=8))
     print(model.best_params_)
-
 
 
 if __name__ == '__main__':
