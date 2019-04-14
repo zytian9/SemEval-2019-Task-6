@@ -1,7 +1,7 @@
 # SemEval 2019 Task 6
 
 ## Paper
-UM-IU@LING at SemEval-2019 Task 6: Identifying Offensive Tweets Using BERT and SVMs [[arxiv]](https://arxiv.org/abs/1904.03450)
+[UM-IU@LING at SemEval-2019 Task 6: Identifying Offensive Tweets Using BERT and SVMs](https://arxiv.org/abs/1904.03450)
 
 Jian Zhu, Zuoyu Tian, Sandra Kübler
 ## Bert
