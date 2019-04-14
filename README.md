@@ -6,6 +6,9 @@ UM-IU@LING at SemEval-2019 Task 6: Identifying Offensive Tweets Using BERT and S
 Jian Zhu, Zuoyu Tian, Sandra Kübler
 ## Bert
 run_bert.py
+### Usage
+`python run_bert.py --task_name one --do_train --do_eval --do_lower_case --data_dir ./training/ --bert_model bert-base-uncased --max_seq_length 80 --train_batch_size 32 --learning_rate 2e-5 --num_train_epochs 2.0 --output_dir ./output/`
+
 
 ## SVM
 run_svm.py
