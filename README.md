@@ -8,10 +8,13 @@ Jian Zhu, Zuoyu Tian, Sandra Kübler
 run_bert.py
 ### Usage
 `python run_bert.py --task_name one --do_train --do_eval --do_lower_case --data_dir ./training/ --bert_model bert-base-uncased --max_seq_length 80 --train_batch_size 32 --learning_rate 2e-5 --num_train_epochs 2.0 --output_dir ./output/`
-
+### Dependency
+* pytorch 1.0
+* [pytorch_pretrained_bert](https://github.com/huggingface/pytorch-pretrained-BERT)
 
 ## SVM
 run_svm.py
+
 
 ### Feature Selection
 The feature selection part is based on the following papers. If you want to use it, please cite one of the papers:
