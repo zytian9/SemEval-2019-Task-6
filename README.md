@@ -4,6 +4,11 @@
 [UM-IU@LING at SemEval-2019 Task 6: Identifying Offensive Tweets Using BERT and SVMs](https://arxiv.org/abs/1904.03450)
 
 Jian Zhu, Zuoyu Tian, Sandra Kübler
+
+
+* In subtask A, we fine-tuned a BERT based classifier to detect abusive content in tweets, achieving a macro F1 score of 0.8136 on the test data, thus reaching the 3rd rank out of 103 submissions. 
+* In subtasks B and C, we used a linear SVM with selected character n-gram features. For subtask C, our system could identify the target of abuse with a macro F1 score of 0.5243, ranking it 27th out of 65 submissions.
+
 ## Bert
 run_bert.py
 ### Usage
